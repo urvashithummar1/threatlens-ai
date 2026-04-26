@@ -20,9 +20,10 @@ function App() {
   }
 
   try {
-    const res = await axios.post("http://localhost:5000/analyze", {
-      message,
-    });
+    const res = await axios.post(
+  "https://threatlens-ai-qwzv.onrender.com/analyze",
+  { message }
+);
     setResult(res.data);
     setInput("");
 setFile(null);
@@ -76,7 +77,7 @@ setHistory([res.data, ...history.slice(0, 4)]);
 
     <div className="result-row">
       <span>Threat</span>
-      <b>{result.type}</b>
+      <b>{result.threat}</b>
     </div>
 
     <div className="result-row">
@@ -87,7 +88,7 @@ setHistory([res.data, ...history.slice(0, 4)]);
           result.score >= 5 ? "#f59e0b" :
           "#22c55e"
       }}>
-        {result.score}
+        {result.risk}
       </b>
     </div>
 
@@ -98,7 +99,7 @@ setHistory([res.data, ...history.slice(0, 4)]);
 
     <div className="result-row">
       <span>Action</span>
-      <b>{result.recommendation}</b>
+      <b>{result.action}</b>
     </div>
   </div>
 )}
