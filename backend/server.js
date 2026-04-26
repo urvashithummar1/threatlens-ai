@@ -1,33 +1,31 @@
-require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const OpenAI = require("openai");
+require("dotenv").config();
 
 const app = express();
-app.use(cors());
+
 app.use(express.json({ limit: "10mb" }));
+app.use(cors());
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+app.get("/", (req, res) => {
+  res.send("Backend is running 🚀");
 });
 
-app.post("/analyze", (req, res) => {
-  const message = req.body.message;
-
-  // Fake AI response (for now)
-  let type = "Phishing";
-  let score = 8;
-  let mitre = "T1566.001";
-  let recommendation = "Do not click links. Verify sender.";
-
-  res.json({
-    type,
-    score,
-    mitre,
-    recommendation
-  });
+app.post("/analyze", async (req, res) => {
+  try {
+    res.json({
+      threat: "Phishing",
+      risk: 8,
+      mitre: "T1566.001",
+      action: "Do not click links. Verify sender."
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
-app.listen(5000, () => {
-  console.log("Backend running on http://localhost:5000");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log("Server running on port " + PORT);
 });
